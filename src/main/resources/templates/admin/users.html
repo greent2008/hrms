@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="admin/_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../static/semantic/semantic.min.css">
+    <link rel="stylesheet" href="../../static/css/me.css">
+    <title>用户列表</title>
+</head>
+
+<body>
+    <!-- 导航 -->
+    <nav th:replace="admin/_fragments :: menu(1)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+        <div class="ui container">
+            <div class="ui inverted secondary stackable menu">
+                <h2 class="ui teal header item">管理后台</h2>
+                <a href="#" class="m-item item m-mobile-hide"><i class="user icon"></i>用户</a>
+                <a href="#" class="m-item item m-mobile-hide"><i class="info icon"></i>信息</a>
+                <a href="#" class="m-item item m-mobile-hide"><i class="book icon"></i>简历</a>
+                <div class="right m-item m-mobile-hide menu">
+                    <div class="ui dropdown item">
+                        <div class="text">
+                            <img class="ui avatar image" src="https://picsum.photos/id/1005/100/100"> 李仁密
+                        </div>
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            <a href="#" class="item">注销</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+            <i class="sidebar icon"></i>
+        </a>
+    </nav>
+    <div class="ui attached pointing menu">
+        <div class="ui container">
+            <div class="right menu">
+                <a href="#" th:href="@{/admin/users}" class="teal active item">列表</a>
+            </div>
+        </div>
+    </div>
+
+    <!--中间内容-->
+    <div class="m-container-small m-padded-tb-big">
+        <div class="ui container">
+            <div class="ui success message" th:unless="${#strings.isEmpty(message)}">
+                <i class="close icon"></i>
+                <div class="head">提示：</div>
+                <p th:text="${message}">恭喜，操作成功！</p>
+            </div>
+            <table class="ui celled table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>用户名</th>
+                        <th>中文名</th>
+                        <th>组名</th>
+                        <th>邮箱</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="user,iterStat : ${page.content}">
+                        <td th:text="${iterStat.count}">1</td>
+                        <td th:text="${user.username}">lirenmi</td>
+                        <td th:text="${user.usernameCN}">李仁密</td>
+                        <td th:text="${user.group.getGroupName()}">超级用户组</td>
+                        <td th:text="${user.email}">lirenmi@163.com</td>
+                        <td th:if="${currentUser.type eq 0 || currentUser.type eq 3}">
+                            <a href="#" th:unless="${user.type eq 0 || user.type eq 1 || user.type eq 2}" th:href="@{/admin/info/{id}(id=${user.id})}" class="ui mini teal basic button">用户信息</a>
+                            <a href="#" th:unless="${user.type eq 0 || user.type eq 1 || user.type eq 2}" th:href="@{/admin/resume/{id}(id=${user.id})}" class="ui mini brown basic button">用户简历</a>
+                            <a href="#" th:if="${user.type eq 0}" th:text="超级管理员" class="ui mini brown basic button"></a>
+                            <a href="#" th:if="${user.type eq 1}" th:text="经理" class="ui mini brown basic button"></a>
+                            <a href="#" th:if="${user.type eq 2}" th:text="组长" class="ui mini brown basic button"></a>
+                        </td>
+                        <td th:if="${currentUser.type eq 1 || currentUser.type eq 2}">
+                            <a href="#" th:unless="${user.type eq 0 || user.type eq 1 || user.type eq 2}" th:href="@{/admin/info/{id}(id=${user.id})}" class="ui mini teal basic button">用户信息审阅</a>
+                            <a href="#" th:unless="${user.type eq 0 || user.type eq 1 || user.type eq 2}" th:href="@{/admin/resume/{id}(id=${user.id})}" class="ui mini teal basic button">用户简历审阅</a>
+                            <a href="#" th:if="${user.type eq 0}" th:text="超级管理员" class="ui mini brown basic button"></a>
+                            <a href="#" th:if="${user.type eq 1}" th:text="经理" class="ui mini brown basic button"></a>
+                            <a href="#" th:if="${user.type eq 2}" th:text="组长" class="ui mini brown basic button"></a>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="6">
+                            <div class="ui mini pagination menu" th:if="${page.totalPages}>1">
+                                <a class="item" th:href="@{/admin/users(page=${page.number}-1)}" th:unless="${page.first}">上一页</a>
+                                <a class="item" th:href="@{/admin/users(page=${page.number}+1)}" th:unless="${page.last}">下一页</a>
+                            </div>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <!--底部footer-->
+    <footer th:replace="admin/_fragments :: footer" class="ui inverted vertical segment m-padded-tb-massive">
+        <div class="ui center aligned container">
+            <div class="ui divided inverted stackable grid">
+                <div class="twelve wide column centered">
+                    <h4 class="ui inverted header m-text-thin m-text-spaced">HRMS</h4>
+                    <p class="m-text-thin m-text-spaced m-opacity-mini">这是关于外包人员信息和简历录入系统</p>
+                </div>
+            </div>
+            <div class="ui inverted section divider"></div>
+            <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright @2020 jianengxi</p>
+        </div>
+    </footer>
+
+    <!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+    <script src="../../static/jquery/jquery.min.js"></script>
+    <script src="../../static/semantic/semantic.min.js"></script>
+    <!--/*/</th:block>/*/-->
+
+    <script>
+        $('.menu.toggle').click(function() {
+            $('.m-item').toggleClass('m-mobile-hide');
+        });
+
+        $('.ui.dropdown').dropdown();
+
+        //消息提示关闭初始化
+        $('.message .close')
+          .on('click', function () {
+              $(this)
+                .closest('.message')
+                .transition('fade');
+          });
+    </script>
+
+</body>
+
+</html>

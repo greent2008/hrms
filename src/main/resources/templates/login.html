@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="admin/_fragments :: head(~{::title})">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../static/semantic/semantic.min.css">
+    <link rel="stylesheet" href="../static/css/me.css">
+    <title>hrms用户登录</title>
+</head>
+
+<body>
+    <br>
+    <br>
+    <br>
+
+    <div class="m-container-small m-padded-tb-massive" style="max-width: 30em !important;">
+        <div class="ui container">
+            <div class="ui middle aligned center aligned grid">
+                <div class="column">
+                    <h2 class="ui teal image header">
+                        <div class="content">
+                            管理后台登录
+                        </div>
+                    </h2>
+                    <form class="ui large form" method="post" action="#" th:action="@{/login}">
+                        <div class="ui segment">
+                            <div class="field">
+                                <div class="ui left icon input">
+                                    <i class="user icon"></i>
+                                    <input type="text" name="username" placeholder="用户名">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui left icon input">
+                                    <i class="lock icon"></i>
+                                    <input type="password" name="password" placeholder="密码">
+                                </div>
+                            </div>
+                            <div class="ui grid">
+                                <div class="eight wide column">
+                                    <a class="ui fluid large teal button" href="register/">注   册</a>
+                                </div>
+                                <div class="eight wide column">
+                                    <button class="ui fluid large teal submit button">登   录</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ui mini negative message" th:unless="${#strings.isEmpty(message)}">
+                            <i class="close icon"></i>
+                            <p th:text="${message}">用户名和密码错误</p>
+                        </div>
+
+                        <div class="ui mini negative message" th:unless="${#strings.isEmpty(register_failed)}">
+                            <i class="close icon"></i>
+                            <p th:text="${register_failed}">用户注册失败</p>
+                        </div>
+
+                        <div class="ui mini positive message" th:unless="${#strings.isEmpty(register_success)}">
+                            <i class="close icon"></i>
+                            <p th:text="${register_success}">用户注册成功</p>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--/*/<th:block th:replace="admin/_fragments :: script">/*/-->
+    <script src="../static/jquery/jquery.min.js"></script>
+    <script src="../static/semantic/semantic.min.js"></script>
+    <!--/*/</th:block>/*/-->
+
+    <script>
+        $('.ui.form').form({
+            fields: {
+                username: {
+                    identifier: 'username',
+                    rules: [{
+                        type: 'empty',
+                        prompt: '请输入用户名'
+                    }]
+                },
+                password: {
+                    identifier: 'password',
+                    rules: [{
+                        type: 'empty',
+                        prompt: '请输入密码'
+                    }]
+                }
+            }
+        });
+
+        //消息提示关闭初始化
+        $('.message .close')
+            .on('click', function() {
+                $(this)
+                    .closest('.message')
+                    .transition('fade');
+            });
+    </script>
+
+</body>
+
+</html>

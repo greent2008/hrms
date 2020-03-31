@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" th:href="@{/semantic/semantic.min.css}">
+    <link rel="stylesheet" th:href="@{/css/typo.css}">
+    <link rel="stylesheet" th:href="@{/css/animate.css}">
+    <link rel="stylesheet" th:href="@{/lib/prism/prism.css}">
+    <link rel="stylesheet" th:href="@{/lib/tocbot/tocbot.css}">
+    <link rel="stylesheet" th:href="@{/css/me.css}">
+    <title th:replace="${title}">HRMS管理后台</title>
+</head>
+<body>
+    <!-- 导航 -->
+    <nav th:fragment="menu(n)" class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+        <div class="ui container">
+            <div class="ui inverted secondary stackable menu">
+                <h2 class="ui teal header item">HRMS管理后台</h2>
+                <a href="#" th:href="@{/admin/users}" class="m-item item m-mobile-hide" th:classappend="${n==1} ? 'active'"><i class="user icon"></i>用户</a>
+                <a href="#" th:if="${currentUser ne null && currentUser.getType() eq 3}" th:href="@{/admin/info/{id}(id=${currentUser.id})}" class="m-item item m-mobile-hide" th:classappend="${n==2} ? 'active'"><i class="info icon"></i>信息</a>
+                <a href="#" th:if="${currentUser ne null && currentUser.getType() eq 3}" th:href="@{/admin/resume/{id}(id=${currentUser.id})}" class="m-item item m-mobile-hide" th:classappend="${n==3} ? 'active'"><i class="book icon"></i>简历</a>
+                <div class="right m-item m-mobile-hide menu">
+                    <div class="ui dropdown item">
+                        <div class="text">
+                            <img clas s="ui avatar image" src="https://picsum.photos/id/1005/100/100" th:src="@{${session.user.avatar}}">
+                            <span th:text="${session.user.usernameCN}">李仁密</span>
+                        </div>
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            <a href="#" th:href="@{/logout}" class="item">注销</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+            <i class="sidebar icon"></i>
+        </a>
+    </nav>
+
+    <!--底部footer-->
+    <footer th:fragment="footer" class="ui inverted vertical segment m-padded-tb-massive">
+        <div class="ui center aligned container">
+            <div class="ui divided inverted stackable grid">
+                <div class="twelve wide column centered">
+                    <h4 class="ui inverted header m-text-thin m-text-spaced">HRMS</h4>
+                    <p class="m-text-thin m-text-spaced m-opacity-mini">这是关于外包人员信息和简历录入系统</p>
+                </div>
+            </div>
+            <div class="ui inverted section divider"></div>
+            <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright @2020 jianengxi</p>
+        </div>
+    </footer>
+
+<!--/*/<th:block th:fragment="script">/*/-->
+    <script th:src="@{/jquery/jquery.min.js}"></script>
+    <script th:src="@{/jquery/jquery.scrollTo.min.js}"></script>
+    <script th:src="@{/semantic/semantic.min.js}"></script>
+    <script th:src="@{/lib/prism/prism.js}"></script>
+    <script th:src="@{/lib/tocbot/tocbot.min.js}"></script>
+    <script th:src="@{/lib/qrcode/qrcode.min.js}"></script>
+    <script th:src="@{/lib/waypoints/jquery.waypoints.min.js}"></script>
+<!--/*/</th:block>/*/-->
+
+</body>
+</html>
